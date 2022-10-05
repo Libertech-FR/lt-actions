@@ -95,5 +95,5 @@ runs:
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
         body: |
-          unescape(${{steps.write-body.outputs.result}})
+          ${{steps.write-body.outputs.result.replace(/\n/g, '\r')}}
         update-mode: 'replace'
