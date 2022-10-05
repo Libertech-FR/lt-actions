@@ -77,7 +77,7 @@ runs:
           } else {
             result += `\n> [SPEND] Voici le temps passé sur cette issue pour le moment : ${process.env.TIME}h`
           }
-          return result
+          return "${{ github.event.issue.body }}"
     - name: Update comment
       uses: actions-cool/issues-helper@v3
       if: ${{steps.isbodyok.outputs.result}}
@@ -93,5 +93,5 @@ runs:
         actions: 'update-issue'
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
-        body: "${{steps.write-body.outputs.result}}."
+        body: ${{steps.write-body.outputs.result}}
         update-mode: 'replace'
