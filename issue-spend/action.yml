@@ -62,6 +62,7 @@ runs:
       env:
         TIME: ${{steps.calculate-time.outputs.result}}
       with:
+        result-encoding: string
         script: |
           let result = ''
           const BODY = "${{ github.event.issue.body }}"
