@@ -1,0 +1,86 @@
+name: "Issue spend time"
+description: "Issue spend time"
+inputs:
+  registry:
+    description: 'Docker registry base url'
+    default: 'ghcr.io'
+    required: false
+  repository:
+    description: 'Repository to the project'
+    required: true
+  username:
+    description: 'Username to the project'
+    required: true
+  password:
+    description: 'Password to the project'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Find comments
+      id: findcomments
+      uses: actions-cool/issues-helper@v3
+      with:
+        actions: 'find-comments'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body-include: '!spend'
+
+    - name: Update comment
+      uses: actions-cool/issues-helper@v3
+      with:
+        actions: 'update-comment'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        comment-id: ${{ github.event.comment.id }}
+        emoji: 'eyes'
+
+    - name: Check body
+      id: isbodyok
+      uses: actions/github-script@v6
+      env:
+        COMMENTS: ${{ steps.findcomments.outputs.comments }}
+        COMMENT_ID: ${{ github.event.comment.id }}
+      with:
+        script: |
+          const { COMMENTS, COMMENT_ID } = process.env
+          const regex = /!spend (\d+)( |)(d|h|m)/i;
+          const comments = JSON.parse(process.env.COMMENTS)
+          const comment = comments.find(com => process.env.COMMENT_ID == com.id)
+          return regex.exec(comment.body) != null
+    - name: Calculate time
+      uses: actions/github-script@v6
+      id: calculate-time
+      env:
+        COMMENTS: ${{ steps.findcomments.outputs.comments }}
+      with:
+        script: |
+          const COMMENTS = process.env
+          const regex = /!spend (\d+)( |)(d|h|m)/i;
+          const comments = JSON.parse(process.env.COMMENTS)
+          return comments.map(comment => {
+            const result = regex.exec(comment.body)
+              if(result !== null){
+                switch(result[3]){
+                  case "d": return result[1]*7
+                  case "h": return result[1]*1
+                  default : return 0
+              }
+            } return 0
+          }).reduce((value, total) => value + total, 0 )
+    - name: Update comment
+      uses: actions-cool/issues-helper@v3
+      if: ${{steps.isbodyok.outputs.result}}
+      with:
+        actions: 'update-comment'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        comment-id: ${{ github.event.comment.id }}
+        emoji: '+1'
+
+    - name: Update issue
+      uses: actions-cool/issues-helper@v3
+      with:
+        actions: 'update-issue'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        issue-number: ${{ env.ISSUE_NUMBER }}
+        body: "<!-- metadata: {'timespend':${{steps.calculate-time.outputs.result}} }-->\nBonjour, voici le temps passé sur cette issue pour le moment : ${{steps.calculate-time.outputs.result}}h"
+        update-mode: 'replace'
