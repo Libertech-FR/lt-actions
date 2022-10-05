@@ -68,7 +68,6 @@ runs:
           const BODY = process.env.BODY
           const regex = /<!--\s?metadata\s?:\s?{.*}\s?-->/is
           const regexSpend = /^>\s\[SPEND\]\s.*$/im
-          console.log('BODY', BODY)
           if (regex.exec(BODY) !== null) {
             result += BODY.replace(regex, `<!-- metadata : { "timespend": ${process.env.TIME} } -->`)
           } else {
@@ -79,7 +78,6 @@ runs:
           } else {
             result += `\n> [SPEND] Voici le temps passé sur cette issue pour le moment : ${process.env.TIME}h`
           }
-          console.log('result', result)
           return result
     - name: Update comment
       uses: actions-cool/issues-helper@v3
@@ -96,5 +94,5 @@ runs:
         actions: 'update-issue'
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
-        body: ${{ github.event.issue.body }}
+        body: ${{steps.write-body.outputs.result}}
         update-mode: 'replace'
