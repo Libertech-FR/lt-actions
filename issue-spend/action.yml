@@ -18,6 +18,7 @@ runs:
 
     - name: Update comment
       uses: actions-cool/issues-helper@v3
+      if: contains(github.event.comment.body, '!spend') !== false
       with:
         actions: 'update-comment'
         token: ${{ inputs.token }}
