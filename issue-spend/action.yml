@@ -60,12 +60,11 @@ runs:
       uses: actions/github-script@v6
       id: write-body
       env:
-        BODY: ${{ github.event.issue.body }}
         TIME: ${{steps.calculate-time.outputs.result}}
       with:
         script: |
           let result = ''
-          const BODY = process.env.BODY
+          const BODY = "${{ github.event.issue.body }}"
           const regex = /<!--\s?metadata\s?:\s?{.*}\s?-->/is
           const regexSpend = /^>\s\[SPEND\]\s.*$/im
           if (regex.exec(BODY) !== null) {
