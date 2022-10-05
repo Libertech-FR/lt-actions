@@ -78,7 +78,7 @@ runs:
           } else {
             result += `\n> [SPEND] Voici le temps passé sur cette issue pour le moment : ${process.env.TIME}h`
           }
-          return "${{ github.event.issue.body }}"
+          return result
     - name: Update comment
       uses: actions-cool/issues-helper@v3
       if: ${{steps.isbodyok.outputs.result}}
