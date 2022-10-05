@@ -60,12 +60,13 @@ runs:
       uses: actions/github-script@v6
       id: write-body
       env:
+        BODY: ${{github.event.issue.body}}
         TIME: ${{steps.calculate-time.outputs.result}}
       with:
         result-encoding: string
         script: |
           let result = ''
-          const BODY = "${{ github.event.issue.body }}"
+          const BODY = process.env.BODY
           const regex = /<!--\s?metadata\s?:\s?{.*}\s?-->/is
           const regexSpend = /^>\s\[SPEND\]\s.*$/im
           if (regex.exec(BODY) !== null) {
@@ -94,5 +95,5 @@ runs:
         actions: 'update-issue'
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
-        body: ${{steps.write-body.outputs}}
+        body: ${{steps.write-body.outputs.result}}
         update-mode: 'replace'
