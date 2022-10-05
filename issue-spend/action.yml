@@ -68,12 +68,12 @@ runs:
           const BODY = process.env.BODY
           const regex = /<!--\s?metadata\s?:\s?{.*}\s?-->/is
           const regexSpend = /^>\s\[SPEND\]\s.*$/im
-          if (regex.exec(BODY).length > 0) {
+          if (regex.exec(BODY) !== null) {
             result += BODY.replace(regex, `<!-- metadata : { "timespend": ${process.env.TIME} } -->`)
           } else {
             result += BODY + `<!-- metadata : { "timespend": ${process.env.TIME} } -->`
           }
-          if (regexSpend.exec(BODY).length > 0) {
+          if (regexSpend.exec(BODY) !== null) {
             result = result.replace(regexSpend, `> [SPEND] Voici le temps passé sur cette issue pour le moment : ${process.env.TIME}h`)
           } else {
             result += `> [SPEND] Voici le temps passé sur cette issue pour le moment : ${process.env.TIME}h`
