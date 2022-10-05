@@ -27,5 +27,23 @@ jobs:
 ```
 ## Issue spend
 ````yml
-# TODO : Add issue spend
+name: Update Time Spent On Issues
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  get-comments:
+    runs-on: ubuntu-latest
+    outputs:
+      comments: ${{ steps.generate-matrix.outputs.comments }}
+
+    steps:
+      #       - uses: actions/checkout@v2
+      - name: Time spent control
+        uses: Libertech-FR/lt-actions/issue-spend@main
+        #         if: ${{ startsWith(github.event.comment.body, '!spend') }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 ````
