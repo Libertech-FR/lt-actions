@@ -94,5 +94,5 @@ runs:
         actions: 'update-issue'
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
-        body: ${{steps.write-body.outputs.result}}
+        body: "${{steps.write-body.outputs.result}}."
         update-mode: 'replace'
