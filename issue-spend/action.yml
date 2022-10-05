@@ -44,7 +44,6 @@ runs:
         COMMENTS: ${{ steps.findcomments.outputs.comments }}
       with:
         script: |
-          const COMMENTS = process.env
           const regex = /!spend (\d+)( |)(d|h|m)/i;
           const comments = JSON.parse(process.env.COMMENTS)
           return comments.map(comment => {
@@ -57,6 +56,29 @@ runs:
               }
             } return 0
           }).reduce((value, total) => value + total, 0 )
+    - name: Write body
+      uses: actions/github-script@v6
+      id: write-body
+      env:
+        BODY: ${{ github.event.issue.body }}
+        TIME: ${{steps.calculate-time.outputs.result}}
+      with:
+        script: |
+          let result = ''
+          const BODY = process.env.BODY
+          const regex = /<!--\s?metadata\s?:\s?{.*}\s?-->/is
+          const regexSpend = /^>\s\[SPEND\]\s.*$/im
+          if (regex.exec(BODY).length > 0) {
+            result += BODY.replace(regex, `<!-- metadata : { "timespend": ${process.env.TIME} } -->`)
+          } else {
+            result += BODY + `<!-- metadata : { "timespend": ${process.env.TIME} } -->`
+          }
+          if (regexSpend.exec(BODY).length > 0) {
+            result = result.replace(regexSpend, `> [SPEND] Voici le temps passé sur cette issue pour le moment : ${process.env.TIME}h`)
+          } else {
+            result += `> [SPEND] Voici le temps passé sur cette issue pour le moment : ${process.env.TIME}h`
+          }
+          return result
     - name: Update comment
       uses: actions-cool/issues-helper@v3
       if: ${{steps.isbodyok.outputs.result}}
@@ -72,5 +94,5 @@ runs:
         actions: 'update-issue'
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
-        body: "${{ github.event.issue.body }}\n<!-- metadata: {'timespend':${{steps.calculate-time.outputs.result}} }-->\nBonjour, voici le temps passé sur cette issue pour le moment : ${{steps.calculate-time.outputs.result}}h"
+        body: "${{steps.write-body.outputs.result}}"
         update-mode: 'replace'
