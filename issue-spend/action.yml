@@ -72,5 +72,5 @@ runs:
         actions: 'update-issue'
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
-        body: "<!-- metadata: {'timespend':${{steps.calculate-time.outputs.result}} }-->\nBonjour, voici le temps passé sur cette issue pour le moment : ${{steps.calculate-time.outputs.result}}h"
+        body: "${{ github.event.issue.body }}\n<!-- metadata: {'timespend':${{steps.calculate-time.outputs.result}} }-->\nBonjour, voici le temps passé sur cette issue pour le moment : ${{steps.calculate-time.outputs.result}}h"
         update-mode: 'replace'
