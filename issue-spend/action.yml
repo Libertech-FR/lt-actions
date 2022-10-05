@@ -44,7 +44,7 @@ runs:
         COMMENTS: ${{ steps.findcomments.outputs.comments }}
       with:
         script: |
-          const regex = /!spend (\d+)( |)(d|h)/i;
+          const regex = /!spend (-?\d+)( |)(d|h)/i;
           const comments = JSON.parse(process.env.COMMENTS)
           return comments.map(comment => {
             const result = regex.exec(comment.body)
