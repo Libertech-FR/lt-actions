@@ -94,6 +94,5 @@ runs:
         actions: 'update-issue'
         token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
-        body: |
-          ${{steps.write-body.outputs.result.replace(/\n/g, '\r')}}
+        body: ${{ github.event.issue.body }}
         update-mode: 'replace'
