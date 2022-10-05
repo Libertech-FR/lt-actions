@@ -1,17 +1,7 @@
 name: "Issue spend time"
 description: "Issue spend time"
 inputs:
-  registry:
-    description: 'Docker registry base url'
-    default: 'ghcr.io'
-    required: false
-  repository:
-    description: 'Repository to the project'
-    required: true
-  username:
-    description: 'Username to the project'
-    required: true
-  password:
+  token:
     description: 'Password to the project'
     required: true
 
@@ -23,14 +13,14 @@ runs:
       uses: actions-cool/issues-helper@v3
       with:
         actions: 'find-comments'
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.token }}
         body-include: '!spend'
 
     - name: Update comment
       uses: actions-cool/issues-helper@v3
       with:
         actions: 'update-comment'
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.token }}
         comment-id: ${{ github.event.comment.id }}
         emoji: 'eyes'
 
@@ -72,7 +62,7 @@ runs:
       if: ${{steps.isbodyok.outputs.result}}
       with:
         actions: 'update-comment'
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.token }}
         comment-id: ${{ github.event.comment.id }}
         emoji: '+1'
 
@@ -80,7 +70,7 @@ runs:
       uses: actions-cool/issues-helper@v3
       with:
         actions: 'update-issue'
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.token }}
         issue-number: ${{ env.ISSUE_NUMBER }}
         body: "<!-- metadata: {'timespend':${{steps.calculate-time.outputs.result}} }-->\nBonjour, voici le temps passé sur cette issue pour le moment : ${{steps.calculate-time.outputs.result}}h"
         update-mode: 'replace'
