@@ -11,7 +11,6 @@ runs:
     - name: Find comments
       id: findcomments
       uses: actions-cool/issues-helper@v3
-      if: ${{ startsWith(github.event.comment.body, '!spend') }}
       with:
         actions: 'find-comments'
         token: ${{ inputs.token }}
@@ -19,7 +18,6 @@ runs:
 
     - name: Update comment
       uses: actions-cool/issues-helper@v3
-      if: ${{ startsWith(github.event.comment.body, '!spend') }}
       with:
         actions: 'update-comment'
         token: ${{ inputs.token }}
@@ -29,7 +27,6 @@ runs:
     - name: Check body
       id: isbodyok
       uses: actions/github-script@v6
-      if: ${{ startsWith(github.event.comment.body, '!spend') }}
       env:
         COMMENTS: ${{ steps.findcomments.outputs.comments }}
         COMMENT_ID: ${{ github.event.comment.id }}
@@ -42,7 +39,6 @@ runs:
           return regex.exec(comment.body) != null
     - name: Calculate time
       uses: actions/github-script@v6
-      if: ${{ startsWith(github.event.comment.body, '!spend') }}
       id: calculate-time
       env:
         COMMENTS: ${{ steps.findcomments.outputs.comments }}
@@ -62,7 +58,6 @@ runs:
           }).reduce((value, total) => value + total, 0 )
     - name: Write body
       uses: actions/github-script@v6
-      if: ${{ startsWith(github.event.comment.body, '!spend') }}
       id: write-body
       env:
         BODY: ${{github.event.issue.body}}
@@ -96,7 +91,6 @@ runs:
 
     - name: Update issue
       uses: actions-cool/issues-helper@v3
-      if: ${{ startsWith(github.event.comment.body, '!spend') }}
       with:
         actions: 'update-issue'
         token: ${{ inputs.token }}
