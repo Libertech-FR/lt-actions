@@ -35,15 +35,14 @@ on:
 
 jobs:
   get-comments:
+    if: ${{ startsWith(github.event.comment.body, '!spend') }}
     runs-on: ubuntu-latest
     outputs:
       comments: ${{ steps.generate-matrix.outputs.comments }}
 
     steps:
-      #       - uses: actions/checkout@v2
       - name: Time spent control
         uses: Libertech-FR/lt-actions/issue-spend@main
-        #         if: ${{ startsWith(github.event.comment.body, '!spend') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ````
