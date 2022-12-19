@@ -14,7 +14,7 @@ runs:
       with:
         actions: 'find-comments'
         token: ${{ inputs.token }}
-        body-include: '!spend'
+        body: '!spend'
 
     - name: Update comment
       uses: actions-cool/issues-helper@v3
