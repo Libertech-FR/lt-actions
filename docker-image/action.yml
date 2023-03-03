@@ -5,6 +5,10 @@ inputs:
     description: 'Docker registry base url'
     default: 'ghcr.io'
     required: false
+  context:
+    description: 'Docker context'
+    default: '.'
+    required: false
   repository:
     description: 'Repository to the project'
     required: true
@@ -37,7 +41,7 @@ runs:
     - name: Build and push Docker image
       uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
       with:
-        context: .
+        context: ${{ inputs.context }}
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
