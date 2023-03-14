@@ -28,10 +28,6 @@ inputs:
     description: 'Password to the project'
     required: true
 
-  access_token:
-    description: 'Access token to the project'
-    required: true
-
   github_token:
     description: 'Github token to the project'
     required: true
@@ -62,7 +58,7 @@ runs:
       run: |
         git config user.email "github@action.com"
         git config user.name "Github Action"
-        echo ${{ inputs.access_token }} > token.txt
+        echo ${{ inputs.github_token }} > token.txt
         git config credential.helper "store --file=token.txt"
 
     - name: Update version

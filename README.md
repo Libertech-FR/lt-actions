@@ -48,6 +48,8 @@ jobs:
 ````
 
 ## Publish release
+Créer un fichier release.yml dans le dossier .github/workflows/ :
+
 ```yml
 name: Release
 
@@ -91,9 +93,13 @@ jobs:
           repository: ${{ github.repository }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          access_token: ${{ secrets.PAT }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Optional parameters, thoses are default values :
           registry: 'ghcr.io'
           context: .
+```
+Ajouter ce badge dans le README.md du projet pour afficher le dernier tag de release :
+
+```md
+[![Release](https://github.com/<repo_owner>/<repo_name>/actions/workflows/release.yml/badge.svg)](https://github.com/<repo_owner>/<repo_name>/actions/workflows/release.yml?event=workflow_dispatch)
 ```
