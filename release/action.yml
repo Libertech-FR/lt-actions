@@ -62,7 +62,7 @@ runs:
       run: |
         git config user.email "github@action.com"
         git config user.name "Github Action"
-        echo ${{ secrets.PAT }} > token.txt
+        echo ${{ inputs.access_token }} > token.txt
         git config credential.helper "store --file=token.txt"
 
     - name: Update version
