@@ -46,3 +46,54 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ````
+
+## Publish release
+```yml
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_increment:
+        description: 'La version a incrémenter (major, minor, patch)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - 'major'
+        - 'minor'
+        - 'patch'
+      build_docker_image:
+        description: "Construire l'image docker ?"
+        required: true
+        default: true
+        type: boolean
+      latest:
+        description: "Tagger l'image docker avec le tag 'latest' ?"
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Build docker Nuxt
+        uses: Libertech-FR/lt-actions/release@main
+        with:
+          version_increment: ${{ github.event.inputs.version_increment }}
+          build_docker_image: ${{ github.event.inputs.build_docker_image }}
+          latest: ${{ github.event.inputs.latest }}
+          repository: ${{ github.repository }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Optional parameters, thoses are default values :
+          registry: 'ghcr.io'
+          context: .
+```
