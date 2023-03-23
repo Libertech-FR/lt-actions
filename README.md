@@ -84,7 +84,7 @@ jobs:
       packages: write
 
     steps:
-      - name: Build docker Nuxt
+      - name: Build docker
         uses: Libertech-FR/lt-actions/release@main
         with:
           version_increment: ${{ github.event.inputs.version_increment }}
@@ -97,6 +97,7 @@ jobs:
           # Optional parameters, thoses are default values :
           registry: 'ghcr.io'
           context: .
+          args: ''
 ```
 Ajouter ce badge dans le README.md du projet pour afficher le dernier tag de release :
 

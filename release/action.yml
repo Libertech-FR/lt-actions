@@ -42,6 +42,11 @@ inputs:
     default: '.'
     required: false
 
+  args:
+    description: 'Docker build args'
+    default: ''
+    required: false
+
 runs:
   using: "composite"
   steps:    
@@ -131,5 +136,6 @@ runs:
         context: ${{ inputs.context }}
         push: true
         tags: ${{ env.TAGS }}
+        args: ${{ inputs.args }}
       env:
         TAGS: ${{ env.TAGS }}
