@@ -97,7 +97,7 @@ jobs:
           # Optional parameters, thoses are default values :
           registry: 'ghcr.io'
           context: .
-          args: ''
+          build-args: ''
 ```
 Ajouter ce badge dans le README.md du projet pour afficher le dernier tag de release :
 

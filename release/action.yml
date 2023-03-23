@@ -42,7 +42,7 @@ inputs:
     default: '.'
     required: false
 
-  args:
+  build-args:
     description: 'Docker build args'
     default: ''
     required: false
@@ -136,6 +136,6 @@ runs:
         context: ${{ inputs.context }}
         push: true
         tags: ${{ env.TAGS }}
-        args: ${{ inputs.args }}
+        build-args: ${{ inputs.args }}
       env:
         TAGS: ${{ env.TAGS }}
