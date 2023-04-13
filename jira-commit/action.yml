@@ -1,0 +1,32 @@
+name: Add branch code to commit message
+description: Adds the branch code to the start of each commit message in the branch
+on:
+  push:
+
+jobs:
+  add-branch-code-to-commit-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get branch name
+        id: branch-name
+        run: echo ${{ github.ref }} | sed 's/refs\/heads\///'
+      - name: Extract code from branch name
+        id: branch-code
+        run: echo ${{ steps.branch-name.outputs.run }} | grep -oE '^[A-Z0-9]+-[0-9]+' || true
+        shell: bash
+      - name: Modify commit message
+        if: ${{ steps.branch-code.outputs.code != '' }}
+        run: |
+          CODE="${{ steps.branch-code.run }}"
+          git filter-branch --msg-filter "sed '1s/^/${CODE} /'" HEAD
+        env:
+          CODE: ${{ steps.branch-code.run }}
+      - name: Push changes
+        if: ${{ steps.branch-code.outputs.code != '' }}
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          force: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
