@@ -1,6 +1,7 @@
 #Lt Actions
 ## Docker image
 ```yml
+# docker-image.yml
 name: Docker Image CI
 
 on:
@@ -27,6 +28,7 @@ jobs:
 ```
 ## Issue spend
 ````yml
+# issue-spend.yml
 name: Update Time Spent On Issues
 
 on:
