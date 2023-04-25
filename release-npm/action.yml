@@ -38,11 +38,12 @@ runs:
       env:
         REF: ${{ github.ref }}
 
-    - name: Publish to NPM registry
-      shell: bash
+    - name: Configure NPM registry
       run: |
-        echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" >> ~/.npmrc
-        echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
-        npm publish
+        echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> .npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" >> .npmrc
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.github_token }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+
+    - name: Publish to NPM registry
+      run: npm publish
