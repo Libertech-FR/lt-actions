@@ -51,11 +51,13 @@ runs:
       shell: bash
       run: yarn
       
+    - name: Run build
+      shell: bash
+      run: yarn build
+      
     - name: Set up NPM token
       shell: bash
-      env:
-        NPM_TOKEN: ${{ inputs.github_token }}
-      run: echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" > ~/.npmrc
 
     
     - name: Publish
