@@ -12,12 +12,7 @@ inputs:
 
   github_token:
     description: 'Github token to the project'
-    required: true  
-    
-  package_manager:
-    description: 'npm or yarn'
-    required: false
-    default: 'npm'
+    required: true 
     
 runs:
   using: "composite"
@@ -53,17 +48,6 @@ runs:
         scope: '@RICHARD-Quentin'
         
     - name: Run npm
-      if: ${{ inputs.package_manager == 'npm' }}
-      shell: bash
-      run: |
-        npm install
-        npm run build
-        npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ inputs.github_token }}
-
-    - name: Run yarn
-      if: ${{ inputs.package_manager == 'yarn' }}
       shell: bash
       run: |
         npm install
