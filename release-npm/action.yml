@@ -48,7 +48,7 @@ runs:
         scope: '@RICHARD-Quentin'
         
     - name: Echo .npmrc
-      bash: shell
+      shell: bash
       run: echo ~/.npmrc
         
     - name: Run npm install
