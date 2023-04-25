@@ -39,6 +39,7 @@ runs:
         REF: ${{ github.ref }}
 
     - name: Configure NPM registry
+      shell: bash
       run: |
         echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> .npmrc
         echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" >> .npmrc
@@ -46,4 +47,5 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
 
     - name: Publish to NPM registry
+      shell: bash
       run: npm publish
