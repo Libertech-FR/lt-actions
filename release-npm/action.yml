@@ -12,8 +12,13 @@ inputs:
 
   github_token:
     description: 'Github token to the project'
-    required: true
-
+    required: true  
+    
+  package_manager:
+    description: 'npm or yarn'
+    required: false
+    default: 'npm'
+    
 runs:
   using: "composite"
   steps:    
@@ -47,30 +52,22 @@ runs:
         # Defaults to the user or organization that owns the workflow file
         scope: '@RICHARD-Quentin'
         
-    - name: Echo .npmrc
+    - name: Run npm
+      if: ${{ inputs.package_manager == 'npm' }}
       shell: bash
-      run: echo ~/.npmrc
-        
-    - name: Run npm install
-      shell: bash
-      run: npm install
-      
-    - name: Run build
-      shell: bash
-      run: npm run build
-      
-#     - name: Set up NPM token
-#       shell: bash
-#       run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" > ~/.npmrc
-
-    
-    - name: Publish npm
-      shell: bash
-      run: npm publish
+      run: |
+        npm install
+        npm run build
+        npm publish
       env:
         NODE_AUTH_TOKEN: ${{ inputs.github_token }}
 
-    - run: yarn
-    - run: yarn publish
+    - name: Run yarn
+      if: ${{ inputs.package_manager == 'yarn' }}
+      shell: bash
+      run: |
+        npm install
+        npm run build
+        npm publish
       env:
         NODE_AUTH_TOKEN: ${{ inputs.github_token }}
