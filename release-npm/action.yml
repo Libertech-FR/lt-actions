@@ -52,6 +52,6 @@ runs:
     
     - name: Publish
       shell: bash
-      run: yarn publish
+      run: yarn publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ inputs.github_token }}
