@@ -49,7 +49,7 @@ runs:
         
     - name: Run npm install
       shell: bash
-      run: npm ci
+      run: npm install
       
     - name: Run build
       shell: bash
