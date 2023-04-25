@@ -1,0 +1,47 @@
+name: "Npm Release"
+description: "This action will update version, publish release and push to npm registry"
+inputs:
+  version_increment:
+    description: 'The version increment (major, minor, patch)'
+    required: true
+    default: 'patch'
+
+  repository:
+    description: 'Repository to the project'
+    required: true
+
+  github_token:
+    description: 'Github token to the project'
+    required: true
+
+runs:
+  using: "composite"
+  steps:    
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ inputs.repository }}
+
+    - name: Set up Git
+      shell: bash
+      run: |
+        git config user.email "github@action.com"
+        git config user.name "Github Action"
+        echo ${{ inputs.github_token }} > token.txt
+        git config credential.helper "store --file=token.txt"
+
+    - name: Update version
+      shell: bash
+      run: |
+        echo NEW_VERSION=$(yarn version --${{ inputs.version_increment }} --json | jq -r '.data | select(contains("New version")) | split(":")[1] | gsub(" ";"")') >> $GITHUB_ENV
+        git push --follow-tags
+      env:
+        REF: ${{ github.ref }}
+
+    - name: Publish to NPM registry
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" >> ~/.npmrc
+        echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
+        npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.github_token }}
