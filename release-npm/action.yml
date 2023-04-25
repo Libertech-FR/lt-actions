@@ -39,13 +39,20 @@ runs:
         REF: ${{ github.ref }}
 
     - name: Set up .npmrc
+      shell: bash
       uses: actions/setup-node@v3
       with:
         node-version: '16.x'
         registry-url: 'https://npm.pkg.github.com'
         # Defaults to the user or organization that owns the workflow file
         scope: '@octocat'
-    - run: yarn
-    - run: yarn publish
+        
+    - name: Run yarn
+      shell: bash
+      run: yarn
+    
+    - name: Publish
+      shell: bash
+      run: yarn publish
       env:
         NODE_AUTH_TOKEN: ${{ inputs.github_token }}
