@@ -64,8 +64,13 @@ runs:
 #       run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" > ~/.npmrc
 
     
-    - name: Publish
+    - name: Publish npm
       shell: bash
       run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.github_token }}
+
+    - run: yarn
+    - run: yarn publish
       env:
         NODE_AUTH_TOKEN: ${{ inputs.github_token }}
