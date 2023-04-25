@@ -39,6 +39,7 @@ runs:
         REF: ${{ github.ref }}
 
     - name: Publish to NPM registry
+      shell: bash
       run: |
         echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" >> ~/.npmrc
         echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
