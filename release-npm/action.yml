@@ -47,6 +47,10 @@ runs:
         # Defaults to the user or organization that owns the workflow file
         scope: '@RICHARD-Quentin'
         
+    - name: Echo .npmrc
+      bash: shell
+      run: echo ~/.npmrc
+        
     - name: Run npm install
       shell: bash
       run: npm install
