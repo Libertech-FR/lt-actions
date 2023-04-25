@@ -47,21 +47,21 @@ runs:
         # Defaults to the user or organization that owns the workflow file
         scope: '@RICHARD-Quentin'
         
-    - name: Run yarn
+    - name: Run npm install
       shell: bash
-      run: yarn
+      run: npm ci
       
     - name: Run build
       shell: bash
-      run: yarn build
+      run: npm run build
       
-    - name: Set up NPM token
-      shell: bash
-      run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" > ~/.npmrc
+#     - name: Set up NPM token
+#       shell: bash
+#       run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.github_token }}" > ~/.npmrc
 
     
     - name: Publish
       shell: bash
-      run: yarn publish --non-interactive
+      run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ inputs.github_token }}
