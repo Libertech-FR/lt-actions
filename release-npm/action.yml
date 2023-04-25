@@ -44,14 +44,19 @@ runs:
         node-version: '16.x'
         registry-url: 'https://npm.pkg.github.com'
         # Defaults to the user or organization that owns the workflow file
-        scope: '@octocat'
+        scope: '@RICHARD-Quentin'
         
     - name: Run yarn
       shell: bash
       run: yarn
+      
+    - name: Set up NPM token
+      shell: bash
+      env:
+        NPM_TOKEN: ${{ inputs.github_token }}
+      run: echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
     
     - name: Publish
       shell: bash
-      run: yarn publish --access public
-      env:
-        NODE_AUTH_TOKEN: ${{ inputs.github_token }}
+      run: yarn publish --non-interactive
