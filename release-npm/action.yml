@@ -43,7 +43,7 @@ runs:
       with:
         always-auth: true
         node-version: '16.x'
-        registry-url: 'https://npm.pkg.github.com'
+        registry-url: 'https://registry.npmjs.org'
         # Defaults to the user or organization that owns the workflow file
         scope: '@RICHARD-Quentin'
         
