@@ -82,10 +82,10 @@ runs:
     - name: Push to unprotected branch
       if: inputs.is_branch_protected === false
       shell: bash
-        run: |
-          git push --follow-tags
-        env:
-          REF: ${{ github.ref }}
+      run: |
+        git push --follow-tags
+      env:
+        REF: ${{ github.ref }}
 
     - name: Push to protected branch
       if: inputs.is_branch_protected === true
