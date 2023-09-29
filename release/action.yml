@@ -80,7 +80,7 @@ runs:
         REF: ${{ github.ref }}
 
     - name: Push to unprotected branch
-      if: inputs.is_branch_protected === false
+      if: inputs.is_branch_protected == 'false'
       shell: bash
       run: |
         git push --follow-tags
@@ -88,7 +88,7 @@ runs:
         REF: ${{ github.ref }}
 
     - name: Push to protected branch
-      if: inputs.is_branch_protected === true
+      if: inputs.is_branch_protected == 'true'
       uses: CasperWA/push-protected@v2
       with:
         token: ${{ inputs.github_token }}
