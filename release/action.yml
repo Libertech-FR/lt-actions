@@ -47,6 +47,12 @@ inputs:
     default: ''
     required: false
 
+  is_branch_protected:
+    description: 'Push on a protected branch ? (required github_token)'
+    default: false
+    required: false
+    
+
 runs:
   using: "composite"
   steps:    
@@ -70,9 +76,25 @@ runs:
       shell: bash
       run: |
         echo NEW_VERSION=$(yarn version --${{ inputs.version_increment }} --json | jq -r '.data | select(contains("New version")) | split(":")[1] | gsub(" ";"")') >> $GITHUB_ENV
-        git push --follow-tags
       env:
         REF: ${{ github.ref }}
+
+    - name: Push to unprotected branch
+      if: inputs.is_branch_protected === false
+      shell: bash
+        run: |
+          git push --follow-tags
+        env:
+          REF: ${{ github.ref }}
+
+    - name: Push to protected branch
+      if: inputs.is_branch_protected === true
+      uses: CasperWA/push-protected@v2
+      with:
+        token: ${{ inputs.github_token }}
+        branch: main
+        unprotect_reviews: true
+        tags: true
 
     - name: Publish release
       uses: ncipollo/release-action@v1
