@@ -165,6 +165,6 @@ runs:
         push: true
         tags: ${{ env.TAGS }}
         build-args: ${{ inputs.args }}
-        platforms: linux/amd64, linux/arm64
+        platforms: linux/amd64
       env:
         TAGS: ${{ env.TAGS }}
