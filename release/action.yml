@@ -142,10 +142,10 @@ runs:
         REPO_FULL_NAME: ${{ env.REPO_FULL_NAME }}
 
     - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      uses: docker/setup-qemu-action@v3
         
     - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      uses: docker/setup-buildx-action@v3
 
     - name: Log in to the Container registry
       if: ${{ inputs.build_docker_image == 'true' }}
