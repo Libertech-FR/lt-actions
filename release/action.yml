@@ -132,9 +132,9 @@ runs:
       id: define_tags
       run: |
         if [ "${{ inputs.latest }}" = "true" ]; then
-          echo "TAGS=ghcr.io/${{ env.REPO_FULL_NAME }}:${{ env.NEW_VERSION }},ghcr.io/${{ env.REPO_FULL_NAME }}:latest" >> $GITHUB_ENV
+          echo "TAGS=ghcr.io/${{ env.REPO_FULL_NAME }}:${{ env.NEW_VERSION }},ghcr.io/${{ env.REPO_FULL_NAME }}:latest,ghcr.io/${{ env.REPO_FULL_NAME }}:unstable" >> $GITHUB_ENV
         else
-          echo "TAGS=ghcr.io/${{ env.REPO_FULL_NAME }}:${{ env.NEW_VERSION }}" >> $GITHUB_ENV
+          echo "TAGS=ghcr.io/${{ env.REPO_FULL_NAME }}:${{ env.NEW_VERSION }},ghcr.io/${{ env.REPO_FULL_NAME }}:unstable" >> $GITHUB_ENV
         fi
       env:
         NEW_VERSION: ${{ env.NEW_VERSION }}
